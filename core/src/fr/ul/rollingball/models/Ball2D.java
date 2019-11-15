@@ -14,12 +14,12 @@ import fr.ul.rollingball.dataFactories.TextureFactory;
 public class Ball2D extends Ball
 {
     private Texture imgBall;
-    private TextureFactory textureFactory;
+
 
     public Ball2D(World monde, Vector2 position)
     {
-        textureFactory = TextureFactory.getInstance();
-        imgBall = textureFactory.getImageBall2D();
+        super(monde, position);
+        imgBall = TextureFactory.getInstance().getImageBall2D();
     }
 
     /**

@@ -33,7 +33,7 @@ public class RollingBall extends Game
 		};
 
 		/* Lancement du timer Intro */
-		Timer.schedule(chronoChargementIntro, 3f, 10f); // 3f :  ???????????????
+		Timer.schedule(chronoChargementIntro, 3f); // 3f : 3s avant chaque frame
 	}
 	
 	@Override

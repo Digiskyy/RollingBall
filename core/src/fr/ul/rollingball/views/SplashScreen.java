@@ -35,7 +35,7 @@ public class SplashScreen extends ScreenAdapter
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         affIntro.begin();
-        affIntro.draw(imgIntro, 0, 0);
+        affIntro.draw(imgIntro, 0, 0); // (0,0)
         affIntro.end();
     }
 
