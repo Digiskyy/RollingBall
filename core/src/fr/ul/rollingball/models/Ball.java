@@ -29,7 +29,7 @@ public abstract class Ball
         /* Création du body */
         BodyDef bodyDef = new BodyDef(); // En premier, on créé un bodyDef
         bodyDef.type = BodyDef.BodyType.DynamicBody; // On lui dit que l'objet est dynamique (il bouge et réagit aux forces)
-        //bodyDef.position.set(100, 300); // On définit la position du début de la bille
+        bodyDef.position.set(position.x, position.y); // On définit la position du début de la bille
         bodyBall = monde.createBody(bodyDef); // On créé le body dans le monde en utilisant le bodydef
         CircleShape circle = new CircleShape(); // On créé une forme de cercle
         circle.setRadius((float) Ball.RAYON_GRAND); // On lui donne un rayon

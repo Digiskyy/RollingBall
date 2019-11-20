@@ -1,6 +1,7 @@
 package fr.ul.rollingball.models;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -38,7 +39,8 @@ public class GameWorld
 
         /* Création du monde */
         gravite = new Vector2(0, -10f);
-        position = new Vector2(GameWorld.LARGEUR/2, GameWorld.HAUTEUR/2);
+        position = new Vector2(LARGEUR/2, HAUTEUR/2);
+        //position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeigth()/2);
         monde = new World(gravite, true); // Le paramètre true permet d'améliorer les performances en ne simulant pas les corps inactifs.
         bille2D = new Ball2D(monde, position);
     }
