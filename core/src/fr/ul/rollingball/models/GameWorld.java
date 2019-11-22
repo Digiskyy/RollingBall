@@ -39,8 +39,7 @@ public class GameWorld
 
         /* Création du monde */
         gravite = new Vector2(0, -10f);
-        position = new Vector2(LARGEUR/2, HAUTEUR/2);
-        //position = new Vector2(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeigth()/2);
+        position = new Vector2((float) LARGEUR/2, (float) HAUTEUR/2);
         monde = new World(gravite, true); // Le paramètre true permet d'améliorer les performances en ne simulant pas les corps inactifs.
         bille2D = new Ball2D(monde, position);
     }
@@ -51,12 +50,13 @@ public class GameWorld
     }
 
     /**
-     * Affiche le monde
+     * Affiche le monde et ses élements
+     * @param listeAffichageMonde liste d'affichage du monde
      */
     public void draw(SpriteBatch listeAffichageMonde)
     {
         // Affichage de l'image du fond
-        listeAffichageMonde.draw(imgFond, 0, 0); // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
+        listeAffichageMonde.draw(imgFond, 0, 0, LARGEUR, HAUTEUR); // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
 
         // Affichage de l'image de la bille
         bille2D.draw(listeAffichageMonde);

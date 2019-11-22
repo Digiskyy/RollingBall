@@ -35,16 +35,11 @@ public class RollingBall extends Game
 		/* Lancement du timer Intro */
 		Timer.schedule(chronoChargementIntro, 3f); // 3f : 3s avant chaque frame
 	}
-	
-	@Override
-	public void dispose()
-	{
-		/* Desctruction des écrans */
-		ecranIntro.dispose();
-		ecranJeu.dispose();
-		//Timer.instance().stop();
-	}
 
+	/**
+	 * Détruit l'écran de chargement puis affiche l'écran de jeu. Stoppe le timer.
+	 * Est appelée à la fin du timer
+	 */
 	public void loadGameScreen()
 	{
 		ecranIntro.dispose();

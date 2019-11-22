@@ -13,7 +13,7 @@ import fr.ul.rollingball.dataFactories.TextureFactory;
 
 public class SplashScreen extends ScreenAdapter
 {
-    private SpriteBatch affIntro; // SpriteBatcch est une liste d'affichage qui regroupe les différents éléments à afficher et fait un envoi groupé à la carte graphique
+    private SpriteBatch affIntro; // SpriteBatch est une liste d'affichage qui regroupe les différents éléments à afficher et fait un envoi groupé à la carte graphique
     private TextureFactory textureFactory;
     private Texture imgIntro;
 
@@ -35,7 +35,7 @@ public class SplashScreen extends ScreenAdapter
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         affIntro.begin();
-        affIntro.draw(imgIntro, 0, 0); // (0,0)
+        affIntro.draw(imgIntro, 0, 0);
         affIntro.end();
     }
 

@@ -28,6 +28,7 @@ public class Ball2D extends Ball
      */
     public void draw(SpriteBatch affBall)
     {
-        affBall.draw(imgBall, getPosition().x, getPosition().y, taille, taille); // ????? taille pour le rayon de la bille
+        System.out.println("Position boule : X = " + getPosition().x + " | Y = " + getPosition().y);
+        affBall.draw(imgBall, getPosition().x, getPosition().y, taille, taille);
     }
 }
