@@ -20,9 +20,8 @@ public class GameWorld
     public static final int LARGEUR = 80;
     public static final int HAUTEUR = 60;
     private GameScreen ecranJeu;
-    private Ball bille2D;
+    private Ball bille;
     private World monde;
-    private Vector2 gravite;
     private Vector2 position;
     // Textures
     private TextureFactory textureFactory;
@@ -38,15 +37,19 @@ public class GameWorld
         imgFond = textureFactory.getImageFond();
 
         /* Création du monde */
-        gravite = new Vector2(0, -10f);
         position = new Vector2((float) LARGEUR/2, (float) HAUTEUR/2);
-        monde = new World(gravite, true); // Le paramètre true permet d'améliorer les performances en ne simulant pas les corps inactifs.
-        bille2D = new Ball2D(monde, position);
+        monde = new World(new Vector2(0, 0), true); // Le paramètre true permet d'améliorer les performances en ne simulant pas les corps inactifs.
+        bille = new Ball2D(monde, position);
     }
 
     public Ball getBille()
     {
-        return bille2D;
+        return bille;
+    }
+
+    public World getMonde()
+    {
+        return monde;
     }
 
     /**
@@ -59,6 +62,6 @@ public class GameWorld
         listeAffichageMonde.draw(imgFond, 0, 0, LARGEUR, HAUTEUR); // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
 
         // Affichage de l'image de la bille
-        bille2D.draw(listeAffichageMonde);
+        bille.draw(listeAffichageMonde);
     }
 }

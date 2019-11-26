@@ -2,10 +2,13 @@ package fr.ul.rollingball.views;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import fr.ul.rollingball.models.GameWorld;
 
@@ -13,7 +16,11 @@ import fr.ul.rollingball.models.GameWorld;
 /**
  * Gère l'écran de jeu et tous ses composants
  *
- * lien utile pour la caméra orthographique : https://github.com/libgdx/libgdx/wiki/Orthographic-camera
+ * Liens utiles :
+ *  Caméra orthographique : https://github.com/libgdx/libgdx/wiki/Orthographic-camera
+ *  Accéléromètre : https://github.com/libgdx/libgdx/wiki/Accelerometer
+ *  Démo. d'un jeu mobile avec libGDx : https://github.com/libgdx/libgdx-demo-superjumper
+ *
  */
 
 public class GameScreen extends ScreenAdapter
@@ -28,7 +35,7 @@ public class GameScreen extends ScreenAdapter
         mondeJeu = new GameWorld(this);
 
         /* Création d'une caméra et d'une zone d'affichage */
-        camera = new OrthographicCamera(GameWorld.LARGEUR, GameWorld.LARGEUR * ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()));
+        camera = new OrthographicCamera(GameWorld.LARGEUR, GameWorld.HAUTEUR);
         //viewport = new FitViewport(GameWorld.LARGEUR,  GameWorld.LARGEUR * ((float)Gdx.graphics.getHeight() / (float)Gdx.graphics.getWidth()), camera); // Largeur et hauteur de la zone d'affichage (=viewport) qu'on relie à la caméra, (la hauteur c'est un ratio de la fenêtre)
         //viewport.apply();
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0); // On positionne le centre de la caméra sur le centre de la fenêtre
@@ -38,12 +45,15 @@ public class GameScreen extends ScreenAdapter
     }
 
     /**
-     * Affiche le monde et ses éléments
+     * Met à jour l'affichage du monde et de ses éléments
      * @param delta
      */
     @Override
     public void render(float delta)
     {
+        // Gestion de la gravité
+        update();
+
         // Mise à jour de la caméra (du viewport)
         camera.update();
         listeAffichageMonde.setProjectionMatrix(camera.combined);
@@ -80,5 +90,17 @@ public class GameScreen extends ScreenAdapter
     public void dispose()
     {
         listeAffichageMonde.dispose();
+    }
+
+    /**
+     * Met à jour les informations sur le monde (gravité calculée depuis l'accéléromètre)
+     */
+    public void update()
+    {
+        float accelX = Gdx.input.getAccelerometerX() * 5f;
+        float accelY = Gdx.input.getAccelerometerY() * 5f;
+        Vector2 gravite = new Vector2(accelY, -accelX);
+        mondeJeu.getBille().applyGravite(gravite);
+        mondeJeu.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
     }
 }

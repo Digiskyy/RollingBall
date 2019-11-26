@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
 
 /**
  * Représente les billes de notre jeu
+ *
+ * Lien utile pour Box2D (body) et libGDx : https://github.com/libgdx/libgdx/wiki/Box2d
  */
 public abstract class Ball
 {
@@ -30,9 +32,9 @@ public abstract class Ball
         BodyDef bodyDef = new BodyDef(); // En premier, on créé un bodyDef
         bodyDef.type = BodyDef.BodyType.DynamicBody; // On lui dit que l'objet est dynamique (il bouge et réagit aux forces)
         bodyDef.position.set(position.x, position.y); // On définit la position du début de la bille
-        bodyBall = monde.createBody(bodyDef); // On créé le body dans le monde en utilisant le bodydef
         CircleShape circle = new CircleShape(); // On créé une forme de cercle
-        circle.setRadius(Ball.RAYON_GRAND); // On lui donne un rayon
+        circle.setRadius(Ball.RAYON_GRAND * 2f); // On lui donne un diamètre - FONCTIONNE PAS LE * 2
+        bodyBall = monde.createBody(bodyDef); // On créé le body dans le monde en utilisant le bodydef
 
         /* Propriété physique de la bille */
         FixtureDef physiqueDef = new FixtureDef();
@@ -41,6 +43,7 @@ public abstract class Ball
         physiqueDef.restitution = (float) 0.25; // Elasticité de l'objet
         physiqueDef.friction = 0;
         bodyBall.createFixture(physiqueDef); // On relie les propriétés physiques au body
+
         circle.dispose(); // On n'a plus besoin de la forme, on la détruit
     }
 
@@ -52,6 +55,13 @@ public abstract class Ball
     public Vector2 getPosition()
     {
         return bodyBall.getPosition();
+    }
+
+
+    public void applyGravite(Vector2 gravite)
+    {
+        //bodyBall.applyForceToCenter(gravite, true); // Applique la gravité à la boule - On peut "endormir" l'objet pour ne pas faire les calculs dessus pour améliorer les performances si l'objet n'est pas mobile (forces stables)
+        bodyBall.setLinearVelocity(gravite); // Fonctionne mieux
     }
 
     public abstract void draw(SpriteBatch affBall);

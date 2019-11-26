@@ -12,6 +12,7 @@ public class AndroidLauncher extends AndroidApplication
 	{
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		config.a = 8; // Indique le nombre de bits du codage alpha
 		config.useAccelerometer = true;
 		initialize(new RollingBall(), config);
 	}
