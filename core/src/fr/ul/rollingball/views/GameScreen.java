@@ -2,14 +2,11 @@ package fr.ul.rollingball.views;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Graphics;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import fr.ul.rollingball.models.GameWorld;
 
 
@@ -101,6 +98,6 @@ public class GameScreen extends ScreenAdapter
         float accelY = Gdx.input.getAccelerometerY() * 5f;
         Vector2 gravite = new Vector2(accelY, -accelX);
         mondeJeu.getBille().applyGravite(gravite);
-        mondeJeu.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2);
+        mondeJeu.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2); // Ajoute un pas de temps dans le monde
     }
 }

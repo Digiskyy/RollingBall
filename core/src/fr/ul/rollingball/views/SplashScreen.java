@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 
 /**
@@ -50,6 +51,9 @@ public class SplashScreen extends ScreenAdapter
         affIntro.begin();
         affIntro.draw(imgIntro, 0, 0);
         affIntro.end();
+
+        // Son
+        //SoundFactory.getInstance().getSonGagne().play(0.1f);
     }
 
     @Override
