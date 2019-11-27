@@ -33,7 +33,7 @@ public abstract class Ball
         bodyDef.type = BodyDef.BodyType.DynamicBody; // On lui dit que l'objet est dynamique (il bouge et réagit aux forces)
         bodyDef.position.set(position.x, position.y); // On définit la position du début de la bille
         CircleShape circle = new CircleShape(); // On créé une forme de cercle
-        circle.setRadius(Ball.RAYON_GRAND * 2f); // On lui donne un diamètre - FONCTIONNE PAS LE * 2
+        circle.setRadius(RAYON_GRAND * 2f); // On lui donne un diamètre - FONCTIONNE PAS LE * 2
         bodyBall = monde.createBody(bodyDef); // On créé le body dans le monde en utilisant le bodydef
 
         /* Propriété physique de la bille */
@@ -45,11 +45,6 @@ public abstract class Ball
         bodyBall.createFixture(physiqueDef); // On relie les propriétés physiques au body
 
         circle.dispose(); // On n'a plus besoin de la forme, on la détruit
-    }
-
-    public float getTaille()
-    {
-        return taille;
     }
 
     public Vector2 getPosition()
