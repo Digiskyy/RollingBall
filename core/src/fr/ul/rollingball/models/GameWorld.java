@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 import fr.ul.rollingball.views.GameScreen;
 
@@ -48,7 +48,39 @@ public class GameWorld
         
         /* Création des pastilles */
         pastilles = new ArrayList<>();
-        pastilles.add(new ScorePastille(monde, new Vector2((float)LARGEUR/3, (float)HAUTEUR/3)));
+        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
+
+        /* Gestion des collisions */
+        monde.setContactListener(new ContactListener()
+        {
+            @Override
+            /**
+             * Action au début du contact
+             */
+            public void beginContact(Contact contact)
+            {
+                /* Vérification si la bille est en contact avec une pastille */
+
+            }
+
+            @Override
+            public void endContact(Contact contact)
+            {
+
+            }
+
+            @Override
+            public void preSolve(Contact contact, Manifold oldManifold)
+            {
+
+            }
+
+            @Override
+            public void postSolve(Contact contact, ContactImpulse impulse)
+            {
+
+            }
+        });
     }
 
     public Ball getBille()
@@ -70,13 +102,13 @@ public class GameWorld
         /* Affichage de l'image du fond */
         listeAffichageMonde.draw(imgFond, 0, 0, LARGEUR, HAUTEUR); // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
 
-        /* Affichage de l'image de la bille */
-        bille.draw(listeAffichageMonde);
-
         /* Affichage des pastilles de type Score */
         for(Pastille pastille : pastilles)
         {
             pastille.draw(listeAffichageMonde);
         }
+
+        /* Affichage de l'image de la bille */
+        bille.draw(listeAffichageMonde);
     }
 }

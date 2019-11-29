@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 
 
@@ -30,7 +31,8 @@ public class ScorePastille extends Pastille
     public void draw(SpriteBatch affMonde)
     {
         System.out.println("Position pastille : X = " + getPosition().x + " | Y = " + getPosition().y);
-        affMonde.draw(imgPastilleScore, getPosition().x, getPosition().y, getRAYON() * 2f, getRAYON() * 2f);
+        affMonde.draw(imgPastilleScore, getPosition().x - getRAYON(), getPosition().y - getRAYON(), getRAYON() * 2f, getRAYON() * 2f);
+        // On soustrait le rayon de la pastille pour réaligner le centre de la texture affichée et le centre du body
     }
 
     @Override
@@ -39,6 +41,6 @@ public class ScorePastille extends Pastille
      */
     public void effect()
     {
-
+        SoundFactory.getInstance().getSonPastilleScore().play(0.1f);
     }
 }

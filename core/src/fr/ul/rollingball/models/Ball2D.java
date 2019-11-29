@@ -29,6 +29,7 @@ public class Ball2D extends Ball
     public void draw(SpriteBatch affMonde)
     {
         System.out.println("Position boule : X = " + getPosition().x + " | Y = " + getPosition().y);
-        affMonde.draw(imgBall, getPosition().x, getPosition().y, taille * 2f, taille * 2f);
+        affMonde.draw(imgBall, getPosition().x - taille, getPosition().y - taille, taille * 2f, taille * 2f);
+        // On fait la position - taille (= rayon) car sinon la texture est décalée et le point en bas à gauche correspond au centre du body. On réaligne les centres de l'image et du body
     }
 }

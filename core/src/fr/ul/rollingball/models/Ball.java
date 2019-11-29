@@ -13,8 +13,8 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public abstract class Ball
 {
-    protected static final float RAYON_GRAND = GameWorld.LARGEUR / 50;
-    protected static final float RAYON_PETIT = GameWorld.LARGEUR / 100;
+    protected static final float RAYON_GRAND = (float)GameWorld.LARGEUR / 50;
+    protected static final float RAYON_PETIT = (float)GameWorld.LARGEUR / 100;
     protected float taille;
     protected Body bodyBall; // Représente le corps physique de la bille
 

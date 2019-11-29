@@ -16,7 +16,7 @@ public class SoundFactory
     private Sound sonCollision;
     private Sound sonPerdu;
     private Sound sonGagne;
-    private Sound sonPastilleNormale;
+    private Sound sonPastilleScore;
     private Sound sonPastilleTemps;
     private Sound sonPastilleTaille;
 
@@ -27,7 +27,7 @@ public class SoundFactory
         sonCollision = Gdx.audio.newSound(Gdx.files.internal("sounds/collision.wav"));
         sonGagne = Gdx.audio.newSound(Gdx.files.internal("sounds/victoire.mp3"));
         sonPerdu = Gdx.audio.newSound(Gdx.files.internal("sounds/perte.mp3"));
-        sonPastilleNormale = Gdx.audio.newSound(Gdx.files.internal("sounds/pastille.wav"));
+        sonPastilleScore = Gdx.audio.newSound(Gdx.files.internal("sounds/pastille.wav"));
         sonPastilleTemps = Gdx.audio.newSound(Gdx.files.internal("sounds/ptemps.wav"));
         sonPastilleTaille = Gdx.audio.newSound(Gdx.files.internal("sounds/ptaille.wav"));
     }
@@ -57,9 +57,9 @@ public class SoundFactory
         return sonGagne;
     }
 
-    public Sound getSonPastilleNormale()
+    public Sound getSonPastilleScore()
     {
-        return sonPastilleNormale;
+        return sonPastilleScore;
     }
 
     public Sound getSonPastilleTemps()

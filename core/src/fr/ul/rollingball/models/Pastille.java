@@ -19,7 +19,7 @@ public abstract class Pastille
         /* Création du body */
         BodyDef bodyDefP = new BodyDef();
         bodyDefP.type = BodyDef.BodyType.StaticBody;
-        bodyDefP.position.set(position);
+        bodyDefP.position.set(position.x, position.y);
         CircleShape circle = new CircleShape();
         circle.setRadius(RAYON);
         bodyPastille = monde.createBody(bodyDefP); // On crée le body dans le monde

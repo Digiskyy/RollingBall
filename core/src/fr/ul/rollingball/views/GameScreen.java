@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import fr.ul.rollingball.models.GameWorld;
 
 
@@ -62,6 +63,10 @@ public class GameScreen extends ScreenAdapter
         listeAffichageMonde.begin(); // Prépare la liste à être dessinée
         mondeJeu.draw(listeAffichageMonde); // Affiche
         listeAffichageMonde.end(); // Finit l'affichage
+
+        /* Mode debug qui affiche le rayon exact des bodies pour savoir s'ils correspondent aux images affichées */
+        /*Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
+        box2DDebugRenderer.render(mondeJeu.getMonde(), camera.combined);*/
     }
 
     /**
@@ -75,8 +80,9 @@ public class GameScreen extends ScreenAdapter
         System.out.println("Largeur : " + largeur + " | Hauteur : " + hauteur);
         System.out.println("ViewPortWidth : " + camera.viewportWidth + " | ViewPortHeight : " + camera.viewportHeight);
         //viewport.update(GameWorld.LARGEUR, GameWorld.LARGEUR * ((float) hauteur / (float) largeur));
+
         camera.viewportWidth = GameWorld.LARGEUR;
-        camera.viewportHeight = GameWorld.LARGEUR * ((float) hauteur / (float) largeur);
+        camera.viewportHeight = GameWorld.LARGEUR * ((float) hauteur / (float) largeur); // On calcule la hauteur de la zone d'affichage pour que le ratio (hauteur/largeur) soit égal à celui du monde (hautMonde / largeurMonde)
         camera.update();
     }
 
