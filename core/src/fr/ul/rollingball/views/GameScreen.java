@@ -55,7 +55,7 @@ public class GameScreen extends ScreenAdapter
         camera.update();
         listeAffichageMonde.setProjectionMatrix(camera.combined);
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Efface l'écran qui est affiché (en réalité le buffer de couleur)
 
         // Affichage du monde et de ses composants

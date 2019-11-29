@@ -10,8 +10,9 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public abstract class Pastille
 {
-    private static float RAYON = GameWorld.LARGEUR / 150;
-    private Body bodyPastille;
+    protected static float RAYON = (float)GameWorld.LARGEUR / 150;
+    protected Body bodyPastille;
+    protected boolean isPicked; // Si la pastille est rammassée ou pas
 
     public Pastille(World monde, Vector2 position)
     {
@@ -23,15 +24,21 @@ public abstract class Pastille
         circle.setRadius(RAYON);
         bodyPastille = monde.createBody(bodyDefP); // On crée le body dans le monde
 
-        /* Propriétés phyisiques */
+        /* Propriétés physiques */
         FixtureDef physiqueDef = new FixtureDef();
         physiqueDef.shape = circle;
         physiqueDef.density = 1;
         physiqueDef.restitution = (float) 0.25; // Elasticité de l'objet
         physiqueDef.friction = 0;
+        physiqueDef.isSensor = true; // A sensor shape collects contact information but never generates a collision response.
         bodyPastille.createFixture(physiqueDef); // On relie les propriétés physiques au body
 
         circle.dispose(); // On n'a plus besoin de la forme, on la détruit
+    }
+
+    public static float getRAYON()
+    {
+        return RAYON;
     }
 
     public Vector2 getPosition()
@@ -39,10 +46,30 @@ public abstract class Pastille
         return bodyPastille.getPosition();
     }
 
+    public Body getBodyPastille()
+    {
+        return bodyPastille;
+    }
+
+    public boolean isPicked()
+    {
+        return isPicked;
+    }
+
+    public void setPicked(boolean picked)
+    {
+        isPicked = picked;
+    }
+
     /**
      * Affiche la pastille
-     * @param affPastille la liste d'affichage concernant la pastille
+     * @param affMonde la liste d'affichage auquelle on ajoute la pastille à afficher
      */
-    public abstract void draw(SpriteBatch affPastille);
+    public abstract void draw(SpriteBatch affMonde);
+
+    /**
+     * Applique l'effet de la pastille à la bille qui l'a rammassée
+     */
+    public abstract void effect();
 
 }

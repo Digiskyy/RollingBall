@@ -15,7 +15,7 @@ public class TextureFactory
     private static Texture imgMur;
     private static Texture imgPerdu;
     private static Texture imgGagne;
-    private static Texture imgPastilleNormale;
+    private static Texture imgPastilleScore;
     private static Texture imgPastilleTemps;
     private static Texture imgPastilleTaille;
 
@@ -27,7 +27,7 @@ public class TextureFactory
         imgMur = new Texture("images/Murs.jpg");
         imgPerdu = new Texture("images/Perte.bmp");
         imgGagne = new Texture("images/Bravo.bmp");
-        imgPastilleNormale = new Texture("images/pastilleNormale.bmp");
+        imgPastilleScore = new Texture("images/pastilleNormale.bmp");
         imgPastilleTemps = new Texture("images/pastilleTemps.bmp");
         imgPastilleTaille = new Texture("images/pastilleTaille.bmp");
         
@@ -53,32 +53,32 @@ public class TextureFactory
         return imgBall2D;
     }
 
-    public static Texture getImgMur()
+    public final Texture getImgMur()
     {
         return imgMur;
     }
 
-    public static Texture getImgPerdu()
+    public final Texture getImgPerdu()
     {
         return imgPerdu;
     }
 
-    public static Texture getImgGagne()
+    public final Texture getImgGagne()
     {
         return imgGagne;
     }
 
-    public static Texture getImgPastilleNormale()
+    public final Texture getImgPastilleScore()
     {
-        return imgPastilleNormale;
+        return imgPastilleScore;
     }
 
-    public static Texture getImgPastilleTemps()
+    public final Texture getImgPastilleTemps()
     {
         return imgPastilleTemps;
     }
 
-    public static Texture getImgPastilleTaille()
+    public final Texture getImgPastilleTaille()
     {
         return imgPastilleTaille;
     }

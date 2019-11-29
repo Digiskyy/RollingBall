@@ -24,11 +24,11 @@ public class Ball2D extends Ball
 
     /**
      * Affiche la bille à l'écran
-     * @param affBall liste d'affichage
+     * @param affMonde la liste d'affichage auquelle on ajoute la bille à afficher
      */
-    public void draw(SpriteBatch affBall)
+    public void draw(SpriteBatch affMonde)
     {
         System.out.println("Position boule : X = " + getPosition().x + " | Y = " + getPosition().y);
-        affBall.draw(imgBall, getPosition().x, getPosition().y, taille, taille);
+        affMonde.draw(imgBall, getPosition().x, getPosition().y, taille * 2f, taille * 2f);
     }
 }
