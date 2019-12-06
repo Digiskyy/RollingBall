@@ -103,7 +103,11 @@ public class GameScreen extends ScreenAdapter
         float accelX = Gdx.input.getAccelerometerX() * 5f;
         float accelY = Gdx.input.getAccelerometerY() * 5f;
         Vector2 gravite = new Vector2(accelY, -accelX);
+
         mondeJeu.getBille().applyGravite(gravite);
         mondeJeu.getMonde().step(Gdx.graphics.getDeltaTime(), 6, 2); // Ajoute un pas de temps dans le monde
+
+        /* Ramassage de toutes les pastilles */
+        mondeJeu.ramassePastilles();
     }
 }

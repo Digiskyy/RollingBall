@@ -12,10 +12,12 @@ public abstract class Pastille
 {
     protected static float RAYON = (float)GameWorld.LARGEUR / 150;
     protected Body bodyPastille;
-    protected boolean isPicked; // Si la pastille est rammassée ou pas
+    protected boolean isPicked; // Si la pastille est ramassée ou pas
 
     public Pastille(World monde, Vector2 position)
     {
+        isPicked = false;
+
         /* Création du body */
         BodyDef bodyDefP = new BodyDef();
         bodyDefP.type = BodyDef.BodyType.StaticBody;

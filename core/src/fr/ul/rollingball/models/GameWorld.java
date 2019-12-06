@@ -10,6 +10,7 @@ import fr.ul.rollingball.dataFactories.TextureFactory;
 import fr.ul.rollingball.views.GameScreen;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -49,38 +50,60 @@ public class GameWorld
         /* Création des pastilles */
         pastilles = new ArrayList<>();
         pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
+        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.5f)));
+        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.25f)));
+        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 2.5f)));
 
         /* Gestion des collisions */
         monde.setContactListener(new ContactListener()
         {
             @Override
             /**
-             * Action au début du contact
+             * Action déclenchée au début du contact
              */
             public void beginContact(Contact contact)
             {
-                /* Vérification si la bille est en contact avec une pastille */
+                Body bodyAutre;
+                Body bodyBille;
 
+                /* Identifier la bille entre les deux objets en collisions */
+                if(contact.getFixtureA().getBody().getUserData().getClass().getSimpleName().equals(Ball2D.class.getSimpleName()))
+                {
+                    bodyBille = contact.getFixtureA().getBody();
+                    bodyAutre = contact.getFixtureB().getBody();
+                }
+                else
+                {
+                    bodyBille = contact.getFixtureB().getBody();
+                    bodyAutre = contact.getFixtureA().getBody();
+                }
+
+                /* Vérification si la bille est en contact avec une pastille */
+                if(bodyAutre.getUserData().getClass().getSuperclass().getSimpleName().equals(Pastille.class.getSimpleName()))
+                {
+                    ((Pastille)bodyAutre.getUserData()).setPicked(true);
+                    System.out.println("Contact BILLE -PASTILLE");
+                }
+
+                for(Pastille pastille : pastilles)
+                {
+                    System.out.println("Avant " + pastilles);
+                }
             }
 
             @Override
             public void endContact(Contact contact)
-            {
-
-            }
+            { }
 
             @Override
             public void preSolve(Contact contact, Manifold oldManifold)
-            {
-
-            }
+            { }
 
             @Override
             public void postSolve(Contact contact, ContactImpulse impulse)
-            {
-
-            }
+            { }
         });
+        monde.step(Gdx.graphics.getDeltaTime(), 8, 3);
     }
 
     public Ball getBille()
@@ -91,6 +114,24 @@ public class GameWorld
     public World getMonde()
     {
         return monde;
+    }
+
+    /**
+     * Pour chaque pastille ramassée, on applique son effet, on détruit le corps physique et on la supprime de la liste.
+     */
+    public void ramassePastilles()
+    {
+        Iterator<Pastille> it = pastilles.iterator();
+        while(it.hasNext())
+        {
+            Pastille pastille = it.next();
+            if(pastille.isPicked())
+            {
+                pastille.effect();
+                monde.destroyBody(pastille.getBodyPastille());
+                it.remove();
+            }
+        }
     }
 
     /**

@@ -45,6 +45,8 @@ public abstract class Ball
         bodyBall.createFixture(physiqueDef); // On relie les propriétés physiques au body
 
         circle.dispose(); // On n'a plus besoin de la forme, on la détruit
+
+        bodyBall.setUserData(this); // Pour pouvoir identifier la bille lors des collisions
     }
 
     public Vector2 getPosition()

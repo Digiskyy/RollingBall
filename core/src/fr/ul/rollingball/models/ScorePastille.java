@@ -19,7 +19,7 @@ public class ScorePastille extends Pastille
     public ScorePastille(World monde, Vector2 position)
     {
         super(monde, position);
-        bodyPastille.setUserData("pastille_score"); // Permet d'identifier que c'est une pastille de type score quand la bille rentrera en collission avec elle
+        bodyPastille.setUserData(this); // Permet d'identifier que c'est une pastille de type score quand la bille rentrera en collission avec elle
         imgPastilleScore = TextureFactory.getInstance().getImgPastilleScore();
     }
 
@@ -30,14 +30,14 @@ public class ScorePastille extends Pastille
      */
     public void draw(SpriteBatch affMonde)
     {
-        System.out.println("Position pastille : X = " + getPosition().x + " | Y = " + getPosition().y);
+        //System.out.println("Position pastille : X = " + getPosition().x + " | Y = " + getPosition().y);
         affMonde.draw(imgPastilleScore, getPosition().x - getRAYON(), getPosition().y - getRAYON(), getRAYON() * 2f, getRAYON() * 2f);
         // On soustrait le rayon de la pastille pour réaligner le centre de la texture affichée et le centre du body
     }
 
     @Override
     /**
-     * Applique l'effet de la pastille à la bille qui l'a rammassée
+     * Applique l'effet de la pastille à la bille qui l'a ramassée
      */
     public void effect()
     {
