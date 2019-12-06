@@ -1,6 +1,5 @@
 package fr.ul.rollingball.models;
 
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -8,19 +7,18 @@ import com.badlogic.gdx.physics.box2d.World;
 import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 
-
 /**
- * Pastille de type score, qui augmente le score quand la bille la rammasse
+ * Pastille de type taille, qui augmente le taille de la bille quand elle est ramassée.
  */
-public class ScorePastille extends Pastille
+public class TaillePastille extends Pastille
 {
-    private Texture imgPastilleScore;
+    private Texture imgPastilleTaille;
 
-    public ScorePastille(World monde, Vector2 position)
+    public TaillePastille(World monde, Vector2 position)
     {
         super(monde, position);
-        bodyPastille.setUserData(this); // Permet d'identifier que c'est une pastille de type score quand la bille rentrera en collision avec elle
-        imgPastilleScore = TextureFactory.getInstance().getImgPastilleScore();
+        bodyPastille.setUserData(this);
+        imgPastilleTaille = TextureFactory.getInstance().getImgPastilleTaille();
     }
 
     @Override
@@ -30,8 +28,7 @@ public class ScorePastille extends Pastille
      */
     public void draw(SpriteBatch affMonde)
     {
-        //System.out.println("Position pastille : X = " + getPosition().x + " | Y = " + getPosition().y);
-        affMonde.draw(imgPastilleScore, getPosition().x - RAYON, getPosition().y - RAYON, RAYON * 2f, RAYON * 2f);
+        affMonde.draw(imgPastilleTaille, getPosition().x - RAYON, getPosition().y - RAYON, RAYON * 2f, RAYON * 2f);
         // On soustrait le rayon de la pastille pour réaligner le centre de la texture affichée et le centre du body
     }
 
@@ -41,6 +38,6 @@ public class ScorePastille extends Pastille
      */
     public void effect()
     {
-        SoundFactory.getInstance().getSonPastilleScore().play(0.1f);
+        SoundFactory.getInstance().getSonPastilleTaille().play(0.1f);
     }
 }

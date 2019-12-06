@@ -50,8 +50,8 @@ public class GameWorld
         /* Création des pastilles */
         pastilles = new ArrayList<>();
         pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
-        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.5f)));
-        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.25f)));
+        pastilles.add(new TempsPastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.5f)));
+        pastilles.add(new TaillePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.25f)));
         pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 2.5f)));
 
         /* Gestion des collisions */

@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.*;
  */
 public abstract class Pastille
 {
-    protected static float RAYON = (float)GameWorld.LARGEUR / 150;
+    public static float RAYON = (float)GameWorld.LARGEUR / 150;
     protected Body bodyPastille;
     protected boolean isPicked; // Si la pastille est ramassée ou pas
 
@@ -22,12 +22,12 @@ public abstract class Pastille
         BodyDef bodyDefP = new BodyDef();
         bodyDefP.type = BodyDef.BodyType.StaticBody;
         bodyDefP.position.set(position.x, position.y);
-        CircleShape circle = new CircleShape();
-        circle.setRadius(RAYON);
         bodyPastille = monde.createBody(bodyDefP); // On crée le body dans le monde
 
         /* Propriétés physiques */
         FixtureDef physiqueDef = new FixtureDef();
+        CircleShape circle = new CircleShape();
+        circle.setRadius(RAYON);
         physiqueDef.shape = circle;
         physiqueDef.density = 1;
         physiqueDef.restitution = (float) 0.25; // Elasticité de l'objet
@@ -36,11 +36,6 @@ public abstract class Pastille
         bodyPastille.createFixture(physiqueDef); // On relie les propriétés physiques au body
 
         circle.dispose(); // On n'a plus besoin de la forme, on la détruit
-    }
-
-    public static float getRAYON()
-    {
-        return RAYON;
     }
 
     public Vector2 getPosition()

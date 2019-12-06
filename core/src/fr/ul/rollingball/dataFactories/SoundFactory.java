@@ -32,7 +32,7 @@ public class SoundFactory
         sonPastilleTaille = Gdx.audio.newSound(Gdx.files.internal("sounds/ptaille.wav"));
     }
 
-    public static final SoundFactory getInstance()
+    public static SoundFactory getInstance()
     {
         return INSTANCE;
     }

@@ -8,16 +8,16 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class TextureFactory
 {
-    private static TextureFactory INSTANCE = new TextureFactory();
-    private static Texture imgIntro;
-    private static Texture imgFond;
-    private static Texture imgBall2D;
-    private static Texture imgMur;
-    private static Texture imgPerdu;
-    private static Texture imgGagne;
-    private static Texture imgPastilleScore;
-    private static Texture imgPastilleTemps;
-    private static Texture imgPastilleTaille;
+    private static final TextureFactory INSTANCE = new TextureFactory();
+    private Texture imgIntro;
+    private Texture imgFond;
+    private Texture imgBall2D;
+    private Texture imgMur;
+    private Texture imgPerdu;
+    private Texture imgGagne;
+    private Texture imgPastilleScore;
+    private Texture imgPastilleTemps;
+    private Texture imgPastilleTaille;
 
     private TextureFactory()
     {
@@ -33,7 +33,7 @@ public class TextureFactory
         
     }
 
-    public static final TextureFactory getInstance()
+    public static TextureFactory getInstance()
     {
         return INSTANCE;
     }
