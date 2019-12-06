@@ -14,7 +14,7 @@ import java.util.Iterator;
 
 
 /**
- * Gère le monde phsique du jeu
+ * Gère le monde physique du jeu, contient tous ses élements.
  *
  * lien utile pour les body et le world avec libgdx et box2d : https://github.com/libgdx/libgdx/wiki/Box2d
  */
@@ -23,8 +23,9 @@ public class GameWorld
     public static final int LARGEUR = 80;
     public static final int HAUTEUR = 60;
     private GameScreen ecranJeu;
-    private Ball bille;
     private World monde;
+    private Maze labyrinthe;
+    private Ball bille;
     private Vector2 positionBille;
     private ArrayList<Pastille> pastilles;
     // Textures
@@ -36,23 +37,29 @@ public class GameWorld
     {
         this.ecranJeu = ecranJeu;
 
-        /* Récupération de la texture du monde*/
+        /* Récupération de la texture du monde */
         textureFactory = TextureFactory.getInstance();
         imgFond = textureFactory.getImageFond();
 
         /* Création du monde */
         monde = new World(new Vector2(0, 0), true); // Le paramètre true permet d'améliorer les performances en ne simulant pas les corps inactifs.
 
+        /* Création du labyrinthe */
+        labyrinthe = new Maze(this);
+
+        /* Chargement du labyrinthe */
+        labyrinthe.loadLaby(pastilles);
+
         /* Création de la bille et position au milieu */
-        positionBille = new Vector2((float) LARGEUR/2, (float) HAUTEUR/2);
+        positionBille = labyrinthe.getPositionInitialeBille(); //new Vector2((float) LARGEUR/2, (float) HAUTEUR/2);
         bille = new Ball2D(monde, positionBille);
         
         /* Création des pastilles */
         pastilles = new ArrayList<>();
-        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
+        /*pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
         pastilles.add(new TempsPastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.5f)));
         pastilles.add(new TaillePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.25f)));
-        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 2.5f)));
+        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 2.5f)));*/
 
         /* Gestion des collisions */
         monde.setContactListener(new ContactListener()
@@ -83,11 +90,6 @@ public class GameWorld
                 {
                     ((Pastille)bodyAutre.getUserData()).setPicked(true);
                     System.out.println("Contact BILLE -PASTILLE");
-                }
-
-                for(Pastille pastille : pastilles)
-                {
-                    System.out.println("Avant " + pastilles);
                 }
             }
 

@@ -12,13 +12,14 @@ import fr.ul.rollingball.dataFactories.TextureFactory;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+
 /**
  * Représente le labyrinthe constitué de murs créés à partir d'un masque et qui fera rebondir la bille.
  */
 public class Maze
 {
     private int numLabyrinthe;
-    private World monde;
+    private GameWorld mondeJeu;
     private Pixmap masque;
     private Texture imgLabyrinthe;
     private Texture imgMasque;
@@ -26,9 +27,9 @@ public class Maze
     private ArrayList<Body> bodiesMurs;
     private FixtureDef physiqueDef; // Propriétés physiques d'un mur
 
-    public Maze(World monde)
+    public Maze(GameWorld mondeJeu)
     {
-        this.monde = monde;
+        this.mondeJeu = mondeJeu;
         imgLabyrinthe = TextureFactory.getInstance().getImgMur();
         bodiesMurs = new ArrayList<>();
         positionInitialeBille = new Vector2();
@@ -71,11 +72,13 @@ public class Maze
     public void loadLaby(ArrayList<Pastille> pastilles)
     {
         /* Destruction des murs précédents */
-        /*Iterator<Body> it = pixelsMurs.iterator();
+        /*
+        dispose();
+        Iterator<Body> it = pixelsMurs.iterator();
         while(it.hasNext())
         {
             Body mur = it.next();
-            monde.destroyBody(mur);
+            mondeJeu.getMonde().destroyBody(mur);
         }*/
 
         /* Choisit le masque correspondant au labyrinthe courant */
@@ -113,23 +116,25 @@ public class Maze
 
                     case 100: // Position initiale de la bille
                         positionInitialeBille.set((float)i, (float)j);
+                        //TODO: Où crée-t-on la bille et comment lui donne-t-on sa position - cf Ball.setPosition()
                         break;
 
                     case 128: // Pastille score
-                        pastilles.add(new ScorePastille(monde, new Vector2(i, j))); // Ajoute la pastille dans la liste des pastilles
+                        pastilles.add(new ScorePastille(mondeJeu.getMonde(), new Vector2(i, j))); // Ajoute la pastille dans la liste des pastilles
                         masque.fillCircle(i, j, (int)(2 * Pastille.RAYON)); // Efface les autres pixels colorés qui forment cette pastille pour ne pas recréer d'autres pastilles à cet endroit en dessinant un cercle blanc
                         break;
 
                     case 200: // Pastille taille
-
+                        pastilles.add(new TaillePastille(mondeJeu.getMonde(), new Vector2(i, j)));
+                        masque.fillCircle(i, j, (int)(2 * Pastille.RAYON));
                         break;
 
-                    case 225: // Pastille Temps
-
+                    case 225: // Pastille temps
+                        pastilles.add(new TempsPastille(mondeJeu.getMonde(), new Vector2(i, j)));
+                        masque.fillCircle(i, j, (int)(2 * Pastille.RAYON));
                         break;
 
-                    default: // Zone vide (couleurPixel = 255)
-
+                    default: // Zone vide (couleurPixel = 255 = blanc)
                         break;
                 }
             }
@@ -183,7 +188,7 @@ public class Maze
         BodyDef defMur = new BodyDef();
         defMur.type = BodyDef.BodyType.StaticBody;
         defMur.position.set(x, y);
-        mur = monde.createBody(defMur); // On crée le body dans le monde
+        mur = mondeJeu.getMonde().createBody(defMur); // On crée le body dans le monde
 
         mur.createFixture(physiqueDef); // On relie les propriétés physiques au body
         mur.setUserData("Mur"); // Servira pour les différencier des autres éléments lors des collisions
@@ -206,6 +211,8 @@ public class Maze
      */
     public void dispose()
     {
-
+        masque.dispose();
+        imgMasque.dispose();
+        imgLabyrinthe.dispose();
     }
 }

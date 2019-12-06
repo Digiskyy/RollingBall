@@ -54,6 +54,13 @@ public abstract class Ball
         return bodyBall.getPosition();
     }
 
+    /*public void setPosition(Vector2 position)
+    {
+        //bodyBall.se
+        // BESOIN D'UN BODYDEF POUR METTRE LA POSITION DANS UN BODY COMMENT FAIT-ON POUR MTTRE LA POSITION A UN BODY APRÈS SA CRÉATION
+        // ET SANS PASSER PAR UN BODYDEF
+    }*/
+
     /**
      * Applique la gravité à la bille
      * @param gravite la force à appliquer
