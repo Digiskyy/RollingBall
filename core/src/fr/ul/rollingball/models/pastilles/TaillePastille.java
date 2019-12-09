@@ -1,4 +1,4 @@
-package fr.ul.rollingball.models;
+package fr.ul.rollingball.models.pastilles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -9,6 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import fr.ul.rollingball.dataFactories.MaskFactories;
 import fr.ul.rollingball.dataFactories.TextureFactory;
+import fr.ul.rollingball.models.pastilles.Pastille;
+import fr.ul.rollingball.models.pastilles.ScorePastille;
+import fr.ul.rollingball.models.pastilles.TaillePastille;
+import fr.ul.rollingball.models.pastilles.TempsPastille;
 
 import java.util.ArrayList;
 

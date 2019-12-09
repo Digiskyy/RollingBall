@@ -2,11 +2,10 @@ package fr.ul.rollingball.models;
 
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import fr.ul.rollingball.dataFactories.TextureFactory;
+import fr.ul.rollingball.models.pastilles.Pastille;
 import fr.ul.rollingball.views.GameScreen;
 
 import java.util.ArrayList;

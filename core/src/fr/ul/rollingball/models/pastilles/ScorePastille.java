@@ -1,4 +1,5 @@
-package fr.ul.rollingball.models;
+package fr.ul.rollingball.models.pastilles;
+
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -7,19 +8,21 @@ import com.badlogic.gdx.physics.box2d.World;
 import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 
-/**
- * Pastille de type temps, qui augmente le temps quand la bille la ramasse
- */
-public class TempsPastille extends Pastille
-{
-    private Texture imgPastilleTemps;
 
-    public TempsPastille(World monde, Vector2 position)
+/**
+ * Pastille de type score, qui augmente le score quand la bille la rammasse
+ */
+public class ScorePastille extends Pastille
+{
+    private Texture imgPastilleScore;
+
+    public ScorePastille(World monde, Vector2 position)
     {
         super(monde, position);
-        bodyPastille.setUserData(this); // Permet d'identifier que c'est une pastille de type temps lors des collisions
-        imgPastilleTemps = TextureFactory.getInstance().getImgPastilleTemps();
+        bodyPastille.setUserData(this); // Permet d'identifier que c'est une pastille de type score quand la bille rentrera en collision avec elle
+        imgPastilleScore = TextureFactory.getInstance().getImgPastilleScore();
     }
+
     @Override
     /**
      * Affiche la pastille
@@ -27,7 +30,8 @@ public class TempsPastille extends Pastille
      */
     public void draw(SpriteBatch affMonde)
     {
-        affMonde.draw(imgPastilleTemps, getPosition().x - RAYON, getPosition().y - RAYON, RAYON * 2f, RAYON * 2f);
+        //System.out.println("Position pastille : X = " + getPosition().x + " | Y = " + getPosition().y);
+        affMonde.draw(imgPastilleScore, getPosition().x - RAYON, getPosition().y - RAYON, RAYON * 2f, RAYON * 2f);
         // On soustrait le rayon de la pastille pour réaligner le centre de la texture affichée et le centre du body
     }
 
@@ -37,6 +41,6 @@ public class TempsPastille extends Pastille
      */
     public void effect()
     {
-        SoundFactory.getInstance().getSonPastilleTemps().play(0.1f);
+        SoundFactory.getInstance().getSonPastilleScore().play(0.1f);
     }
 }

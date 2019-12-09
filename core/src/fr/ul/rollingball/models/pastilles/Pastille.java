@@ -1,16 +1,17 @@
-package fr.ul.rollingball.models;
+package fr.ul.rollingball.models.pastilles;
 
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import fr.ul.rollingball.models.GameWorld;
 
 /**
  * Représente un obje de type pastille (normale, temps, taille) dans le monde
  */
 public abstract class Pastille
 {
-    public static float RAYON = (float)GameWorld.LARGEUR / 150;
+    public static float RAYON = (float) GameWorld.LARGEUR / 150;
     protected Body bodyPastille;
     protected boolean isPicked; // Si la pastille est ramassée ou pas
 
