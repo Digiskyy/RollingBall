@@ -28,21 +28,17 @@ public class GameWorld
     private Ball bille;
     private Vector2 positionBille;
     private ArrayList<Pastille> pastilles;
-    // Textures
-    private TextureFactory textureFactory;
-    private Texture imgFond;
 
 
     public GameWorld(GameScreen ecranJeu)
     {
         this.ecranJeu = ecranJeu;
 
-        /* Récupération de la texture du monde */
-        textureFactory = TextureFactory.getInstance();
-        imgFond = textureFactory.getImageFond();
-
         /* Création du monde */
         monde = new World(new Vector2(0, 0), true); // Le paramètre true permet d'améliorer les performances en ne simulant pas les corps inactifs.
+
+        /* Création des pastilles */
+        pastilles = new ArrayList<>();
 
         /* Création du labyrinthe */
         labyrinthe = new Maze(this);
@@ -53,9 +49,7 @@ public class GameWorld
         /* Création de la bille et position au milieu */
         positionBille = labyrinthe.getPositionInitialeBille(); //new Vector2((float) LARGEUR/2, (float) HAUTEUR/2);
         bille = new Ball2D(monde, positionBille);
-        
-        /* Création des pastilles */
-        pastilles = new ArrayList<>();
+
         /*pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
         pastilles.add(new TempsPastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.5f)));
         pastilles.add(new TaillePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.25f)));
@@ -142,8 +136,8 @@ public class GameWorld
      */
     public void draw(SpriteBatch listeAffichageMonde)
     {
-        /* Affichage de l'image du fond */
-        listeAffichageMonde.draw(imgFond, 0, 0, LARGEUR, HAUTEUR); // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
+        /* Affichage ddu décor (fond + mur) */
+        labyrinthe.draw(listeAffichageMonde);
 
         /* Affichage des pastilles de type Score */
         for(Pastille pastille : pastilles)

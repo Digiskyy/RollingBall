@@ -82,7 +82,8 @@ public class GameScreen extends ScreenAdapter
         //viewport.update(GameWorld.LARGEUR, GameWorld.LARGEUR * ((float) hauteur / (float) largeur));
 
         camera.viewportWidth = GameWorld.LARGEUR;
-        camera.viewportHeight = GameWorld.LARGEUR * ((float) hauteur / (float) largeur); // On calcule la hauteur de la zone d'affichage pour que le ratio (hauteur/largeur) soit égal à celui du monde (hautMonde / largeurMonde)
+        camera.viewportHeight = GameWorld.HAUTEUR; // Tout le monde sera affiché mais les objets seront déformés
+        //camera.viewportHeight = GameWorld.LARGEUR * ((float) hauteur / (float) largeur); // On calcule la hauteur de la zone d'affichage pour que le ratio (hauteur/largeur) soit égal à celui du monde (hautMonde / largeurMonde) et ne déforme pas les objets
         camera.update();
     }
 

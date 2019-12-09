@@ -1,5 +1,6 @@
 package fr.ul.rollingball.models;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
@@ -10,7 +11,6 @@ import fr.ul.rollingball.dataFactories.MaskFactories;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 /**
@@ -21,48 +21,40 @@ public class Maze
     private int numLabyrinthe;
     private GameWorld mondeJeu;
     private Pixmap masque;
-    private Texture imgLabyrinthe;
-    private Texture imgMasque;
+    private Texture imgMasque; // Image du masque
+    private Texture imgLabyrinthe; // Image des murs
+    private Texture imgFond; // Image du decor
+    private Texture decorFinal;
+    private Pixmap murs;
+    private Pixmap decor;
     private Vector2 positionInitialeBille;
     private ArrayList<Body> bodiesMurs;
-    private FixtureDef physiqueDef; // Propriétés physiques d'un mur
+    private FixtureDef physiqueDef; // Propriétés physiques d'un murs
+    private CircleShape circle;
 
     public Maze(GameWorld mondeJeu)
     {
         this.mondeJeu = mondeJeu;
-        imgLabyrinthe = TextureFactory.getInstance().getImgMur();
         bodiesMurs = new ArrayList<>();
         positionInitialeBille = new Vector2();
+        
+        imgLabyrinthe = TextureFactory.getInstance().getImgMur();
+        imgFond = TextureFactory.getInstance().getImageFond();
 
-        /* Propriétés physiques d'un mur */
+        /* Propriétés physiques d'un murs */
         physiqueDef = new FixtureDef();
-        CircleShape circle = new CircleShape();
+        circle = new CircleShape();
         circle.setRadius(0.1f); // Pourquoi, je ne sais pas
         physiqueDef.shape = circle;
         physiqueDef.density = 1;
         physiqueDef.restitution = (float) 0.25; // Elasticité de l'objet
         physiqueDef.friction = 0;
-        circle.dispose(); // On n'a plus besoin de la forme, on la détruit
-    }
-
-    public Texture getImgLabyrinthe()
-    {
-        return imgLabyrinthe;
-    }
-
-    public void setImgLabyrinthe(Texture imgLabyrinthe)
-    {
-        this.imgLabyrinthe = imgLabyrinthe;
+        //circle.dispose(); // On n'a plus besoin de la forme, on la détruit
     }
 
     public Vector2 getPositionInitialeBille()
     {
         return positionInitialeBille;
-    }
-
-    public void setPositionInitialeBille(Vector2 positionInitialeBille)
-    {
-        this.positionInitialeBille = positionInitialeBille;
     }
 
     /**
@@ -73,12 +65,11 @@ public class Maze
     {
         /* Destruction des murs précédents */
         /*
-        dispose();
         Iterator<Body> it = pixelsMurs.iterator();
         while(it.hasNext())
         {
-            Body mur = it.next();
-            mondeJeu.getMonde().destroyBody(mur);
+            Body murs = it.next();
+            mondeJeu.getMonde().destroyBody(murs);
         }*/
 
         /* Choisit le masque correspondant au labyrinthe courant */
@@ -86,10 +77,13 @@ public class Maze
 
         /* Lecture du masque */
         readObjects(pastilles);
+
+        /* Construction de la texture composé du décor final (fond + murs) */
+        buildTextureLaby();
     }
 
     /**
-     * Obtenir les position de chaque élément du monde
+     * Obtenir les positions de chaque élément du monde
      * @param pastilles listes des pastilles du labyrinthe courant
      */
     private void readObjects(ArrayList<Pastille> pastilles)
@@ -98,6 +92,8 @@ public class Maze
 
         /* Créer la pixmap du masque à partir de son image */
         masque = creerPixmap(imgMasque);
+
+        masque.setColor(Color.WHITE); // Met la couleur à blanc pour les prochaines opération de dessin
 
         /* Parcours de la pixmap */
         for(int i = 0; i < masque.getWidth(); i++)
@@ -110,28 +106,27 @@ public class Maze
                 switch(couleurPixel)
                 {
                     case 0: // Mur
-                        if(isToBeBuilt(masque, i, j)) // Si le pixel doit avoir un body = s'il est sur la frontière du mur
-                            bodiesMurs.add(creerBodyMur(i, j)); // Ajoute le body correspondant au pixel
+                        if(isToBeBuilt(masque, i, j)) // Si le pixel doit avoir un body = s'il est sur la frontière du murs
+                            bodiesMurs.add(creerBodyMur(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR))); // Ajoute le body correspondant au pixel
                         break;
 
                     case 100: // Position initiale de la bille
-                        positionInitialeBille.set((float)i, (float)j);
-                        //TODO: Où crée-t-on la bille et comment lui donne-t-on sa position - cf Ball.setPosition()
+                        positionInitialeBille.set(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR));
                         break;
 
                     case 128: // Pastille score
-                        pastilles.add(new ScorePastille(mondeJeu.getMonde(), new Vector2(i, j))); // Ajoute la pastille dans la liste des pastilles
-                        masque.fillCircle(i, j, (int)(2 * Pastille.RAYON)); // Efface les autres pixels colorés qui forment cette pastille pour ne pas recréer d'autres pastilles à cet endroit en dessinant un cercle blanc
+                        pastilles.add(new ScorePastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR)))); // Ajoute la pastille dans la liste des pastilles
+                        masque.fillCircle(i, j, 10); // Efface les autres pixels colorés qui forment cette pastille pour ne pas recréer d'autres pastilles à cet endroit en dessinant un cercle blanc
                         break;
 
                     case 200: // Pastille taille
-                        pastilles.add(new TaillePastille(mondeJeu.getMonde(), new Vector2(i, j)));
-                        masque.fillCircle(i, j, (int)(2 * Pastille.RAYON));
+                        pastilles.add(new TaillePastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR),  convertitCoordonnees(j, GameWorld.HAUTEUR))));
+                        masque.fillCircle(i, j, 10);
                         break;
 
                     case 225: // Pastille temps
-                        pastilles.add(new TempsPastille(mondeJeu.getMonde(), new Vector2(i, j)));
-                        masque.fillCircle(i, j, (int)(2 * Pastille.RAYON));
+                        pastilles.add(new TempsPastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR))));
+                        masque.fillCircle(i, j, 10);
                         break;
 
                     default: // Zone vide (couleurPixel = 255 = blanc)
@@ -139,6 +134,24 @@ public class Maze
                 }
             }
         }
+    }
+
+    /**
+     * Convertit un point de la pixmap (1024*720) sur un des axes en point dans le repère du monde (80*60) en multipliant par le bon ratio de largeur et hauteur.
+     * De plus, le pixmap obtenu inverse le masque sur l'axe des ordonnées, donc on doit prendre l'inverse pour l'axe des ordonnées.
+     * @param x la valeur à convertir
+     * @param axe l'axe où est cette valeur, accepte que 2 valeurs GameWorld.LARGEUR et GameWolrd.HAUTEUR
+     * @return la valeur de x converti pour le repère du monde
+     */
+    private float convertitCoordonnees(float x, int axe)
+    {
+        if(axe == GameWorld.LARGEUR)
+            x *= ((float)GameWorld.LARGEUR / imgMasque.getWidth());
+        else if(axe == GameWorld.HAUTEUR)
+            x = GameWorld.HAUTEUR - x * ((float)GameWorld.HAUTEUR / imgMasque.getHeight());
+        else
+            x = 0;
+        return x;
     }
 
     /**
@@ -154,8 +167,8 @@ public class Maze
     }
 
     /**
-     * Détermine si le pixel correspondant à un mur doit avoir un body physique dans le monde ou pas.
-     * Seuls les pixels à la frontière des murs auront un body, c'est-à-dire seuls ceux qui ont 4 pixels voisins correspondant à un mur (couleur noire aussi).
+     * Détermine si le pixel correspondant à un murs doit avoir un body physique dans le monde ou pas.
+     * Seuls les pixels à la frontière des murs auront un body, c'est-à-dire seuls ceux qui ont 4 pixels voisins correspondant à un murs (couleur noire aussi).
      * @param masquePM le pixmap du masque
      * @param x position en abscisse du pixel
      * @param y position en ordonnée du pixel
@@ -170,17 +183,17 @@ public class Maze
                 || (masquePM.getPixel(x, y - 1) & 255) != 0
                 || (masquePM.getPixel(x + 1, y) & 255) != 0
                 || (masquePM.getPixel(x, y + 1) & 255) != 0;
-        
+
         return construction;
     }
 
     /**
-     * Créer un body à la position passée en paramètre correspondant à un pixel de la limite extérieur du mur
+     * Créer un body à la position passée en paramètre correspondant à un pixel de la limite extérieur du murs
      * @param x position en abscisse du pixel
      * @param y position en ordonnée du pixel
      * @return le body créé
      */
-    private Body creerBodyMur(int x, int y)
+    private Body creerBodyMur(float x, float y)
     {
         Body mur;
 
@@ -198,12 +211,49 @@ public class Maze
 
 
     /**
+     * Construit l'image du décor final en remplaçant les pixels du fond par les pixels des murs (connus grâce au masque)
+     */
+    private void buildTextureLaby()
+    {
+        int couleurPixel;
+
+        /* Créer les pixmap à partir des textures */
+        murs = creerPixmap(imgLabyrinthe);
+        decor = creerPixmap(imgFond);
+
+        /* Parcours de l'image du masque */
+        for(int x = 0; x < masque.getWidth(); x++)
+        {
+            for(int y = 0; y < masque.getHeight(); y++)
+            {
+                couleurPixel = masque.getPixel(x, y) & 255;
+
+                if(couleurPixel == 0) // C'est un mur
+                    decor.drawPixel(x, y, murs.getPixel(x, y)); // Remplace la couleur du pixel du décor par la couleur du murs / 4 pour l'assombrir
+                else
+                    decor.drawPixel(x, y, decor.getPixel(x, y) / 4); // On assombrit la couleur des pixels qui forment le fond de la piste
+            }
+        }
+
+        /* Transforme la pixmap du décor en une texture */
+        decorFinal = new Texture(decor);
+
+        /* On détruit les pixmaps temporaires */
+        murs.dispose();
+        decor.dispose();
+    }
+
+
+    /**
      * Ajoute dans la liste d'affichage les éléments du monde
      * @param affMonde liste d'affichage du monde
      */
     public void draw(SpriteBatch affMonde)
     {
+        affMonde.draw(decorFinal, 0, 0, GameWorld.LARGEUR, GameWorld.HAUTEUR);
 
+        //affMonde.draw(new Texture(creerPixmap(imgLabyrinthe)), 0, 0, GameWorld.LARGEUR, GameWorld.HAUTEUR);
+        // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
     }
 
     /**
@@ -214,5 +264,6 @@ public class Maze
         masque.dispose();
         imgMasque.dispose();
         imgLabyrinthe.dispose();
+        circle.dispose();
     }
 }
