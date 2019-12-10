@@ -82,7 +82,6 @@ public class GameWorld
                 if(bodyAutre.getUserData().getClass().getSuperclass().getSimpleName().equals(Pastille.class.getSimpleName()))
                 {
                     ((Pastille)bodyAutre.getUserData()).setPicked(true);
-                    System.out.println("Contact BILLE -PASTILLE");
                 }
             }
 
@@ -134,6 +133,9 @@ public class GameWorld
      */
     public void changeLaby()
     {
+        /* Destruction des murs */
+        labyrinthe.detruireBodiesMur();
+
         /* Destruction des pastilles */
         for(Pastille pastille : pastilles)
         {
@@ -151,8 +153,9 @@ public class GameWorld
 
         /* Nouvelle position de la bille */
         positionBille = labyrinthe.getPositionInitialeBille(); // Récupération de la nouvelle position
-        monde.destroyBody(bille.getBodyBall()); // On détruit le body de l'ancienne boule
-        bille.creerBody(monde, positionBille); // On crée un nouveau body dans le monde avec la nouvelle position
+        bille.getBodyBall().setTransform(positionBille, 0);
+        //monde.destroyBody(bille.getBodyBall()); // On détruit le body de l'ancienne boule
+        //bille.creerBody(monde, positionBille); // On crée un nouveau body dans le monde avec la nouvelle position
 
         /* Vitesse à 0 */
         bille.applyGravite(new Vector2(0f, 0f));

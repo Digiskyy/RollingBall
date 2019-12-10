@@ -69,14 +69,6 @@ public class Maze
      */
     public void loadLaby(ArrayList<Pastille> pastilles)
     {
-        /* Destruction des murs précédents */
-        Iterator<Body> it = bodiesMurs.iterator();
-        while(it.hasNext())
-        {
-            Body murs = it.next();
-            mondeJeu.getMonde().destroyBody(murs);
-        }
-
         /* Choisit le masque correspondant au labyrinthe courant */
         imgMasque = MaskFactories.getInstance().getMasqueLaby(numLabyrinthe);
 
@@ -262,6 +254,21 @@ public class Maze
     public void nextLaby()
     {
         numLabyrinthe++;
+    }
+
+    /**
+     * Détruit les bodies des murs de l'ancien labyrinthe
+     */
+    public void detruireBodiesMur()
+    {
+        /* Destruction des murs précédents */
+        Iterator<Body> it = bodiesMurs.iterator();
+        while(it.hasNext())
+        {
+            Body mur = it.next();
+            mondeJeu.getMonde().destroyBody(mur);
+        }
+        bodiesMurs.clear();
     }
 
     /**
