@@ -130,12 +130,54 @@ public class GameWorld
     }
 
     /**
+     * Change le labyrinthe
+     */
+    public void changeLaby()
+    {
+        /* Destruction des pastilles */
+        for(Pastille pastille : pastilles)
+        {
+            monde.destroyBody(pastille.getBodyPastille());
+        }
+
+        /* Vidage de la liste */
+        pastilles.clear();
+
+        /* Mise à jour du numéro du labyrinthe */
+        labyrinthe.nextLaby();
+
+        /* Chargement du nouveau labyrinthe */
+        labyrinthe.loadLaby(pastilles);
+
+        /* Nouvelle position de la bille */
+        positionBille = labyrinthe.getPositionInitialeBille(); // Récupération de la nouvelle position
+        monde.destroyBody(bille.getBodyBall()); // On détruit le body de l'ancienne boule
+        bille.creerBody(monde, positionBille); // On crée un nouveau body dans le monde avec la nouvelle position
+
+        /* Vitesse à 0 */
+        bille.applyGravite(new Vector2(0f, 0f));
+    }
+
+    /**
+     * Permet de dire si la manche est gagnée ou pas (si la boule est sortie du monde)
+     */
+    public boolean isVictory()
+    {
+        boolean victoire = false;
+
+        if(bille.isOut())
+            victoire = true;
+
+        return victoire;
+    }
+
+    /**
      * Affiche le monde et ses élements
      * @param listeAffichageMonde liste d'affichage du monde et de ses éléments (billes, pastilles, murs)
      */
     public void draw(SpriteBatch listeAffichageMonde)
     {
-        /* Affichage ddu décor (fond + mur) */
+        /* Affichage du décor (fond + mur) */
         labyrinthe.draw(listeAffichageMonde);
 
         /* Affichage des pastilles de type Score */

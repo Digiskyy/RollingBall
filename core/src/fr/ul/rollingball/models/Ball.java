@@ -27,7 +27,21 @@ public abstract class Ball
     public Ball(World monde, Vector2 position)
     {
         this();
+        creerBody(monde, position);
+    }
 
+    public Vector2 getPosition()
+    {
+        return bodyBall.getPosition();
+    }
+
+    public Body getBodyBall()
+    {
+        return bodyBall;
+    }
+
+    public void creerBody(World monde, Vector2 position)
+    {
         /* Création du body */
         BodyDef bodyDef = new BodyDef(); // En premier, on créé un bodyDef
         bodyDef.type = BodyDef.BodyType.DynamicBody; // On lui dit que l'objet est dynamique (il bouge et réagit aux forces)
@@ -43,23 +57,10 @@ public abstract class Ball
         physiqueDef.restitution = (float) 0.25; // Elasticité de l'objet
         physiqueDef.friction = 0;
         bodyBall.createFixture(physiqueDef); // On relie les propriétés physiques au body
-
         circle.dispose(); // On n'a plus besoin de la forme, on la détruit
 
         bodyBall.setUserData(this); // Pour pouvoir identifier la bille lors des collisions
     }
-
-    public Vector2 getPosition()
-    {
-        return bodyBall.getPosition();
-    }
-
-    /*public void setPosition(Vector2 position)
-    {
-        //bodyBall.se
-        // BESOIN D'UN BODYDEF POUR METTRE LA POSITION DANS UN BODY COMMENT FAIT-ON POUR MTTRE LA POSITION A UN BODY APRÈS SA CRÉATION
-        // ET SANS PASSER PAR UN BODYDEF
-    }*/
 
     /**
      * Applique la gravité à la bille
@@ -69,6 +70,22 @@ public abstract class Ball
     {
         //bodyBall.applyForceToCenter(gravite, true); // Applique la gravité à la boule - On peut "endormir" l'objet pour ne pas faire les calculs dessus pour améliorer les performances si l'objet n'est pas mobile (forces stables)
         bodyBall.setLinearVelocity(gravite); // Fonctionne mieux
+    }
+
+    /**
+     * Permet de savoir si la bille est sortie du monde, en dehors des limites du monde
+     * @return un booléen (Vrai si elle sortie, Faux sinon)
+     */
+    public boolean isOut()
+    {
+        boolean out = false;
+
+        if(bodyBall.getPosition().x > GameWorld.LARGEUR + Ball.RAYON_GRAND // A droite
+            || bodyBall.getPosition().x < 0  - Ball.RAYON_GRAND // A gauche
+            || bodyBall.getPosition().y > GameWorld.HAUTEUR - Ball.RAYON_GRAND // En haut
+            || bodyBall.getPosition().y < 0 + Ball.RAYON_GRAND) // En-dessous de l'écran
+            out = true;
+        return out;
     }
 
     /**

@@ -110,5 +110,9 @@ public class GameScreen extends ScreenAdapter
 
         /* Ramassage de toutes les pastilles */
         mondeJeu.ramassePastilles();
+
+        /* Changement du labyrinthe si manche gagnée */
+        if(mondeJeu.isVictory())
+            mondeJeu.changeLaby();
     }
 }

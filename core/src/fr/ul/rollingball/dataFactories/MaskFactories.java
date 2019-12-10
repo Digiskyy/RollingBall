@@ -30,33 +30,40 @@ public class MaskFactories
         return INSTANCE;
     }
 
-    public Texture getMasqueLaby0()
+    public Texture getMasqueLaby(int idLaby)
     {
-        return masqueLaby0;
-    }
+        Texture masque;
+        switch(idLaby)
+        {
+            case 0:
+                masque = masqueLaby0;
+                break;
 
-    public Texture getMasqueLaby1()
-    {
-        return masqueLaby1;
-    }
+            case 1:
+                masque = masqueLaby1;
+                break;
 
-    public Texture getMasqueLaby2()
-    {
-        return masqueLaby2;
-    }
+            case 2:
+                masque = masqueLaby2;
+                break;
 
-    public Texture getMasqueLaby3()
-    {
-        return masqueLaby3;
-    }
+            case 3:
+                masque = masqueLaby3;
+                break;
 
-    public Texture getMasqueLaby4()
-    {
-        return masqueLaby4;
-    }
+            case 4:
+                masque = masqueLaby4;
+                break;
 
-    public Texture getMasqueLaby5()
-    {
-        return masqueLaby5;
+            case 5:
+                masque = masqueLaby5;
+                break;
+
+            default:
+                masque = null;
+                break;
+        }
+
+        return masque;
     }
 }

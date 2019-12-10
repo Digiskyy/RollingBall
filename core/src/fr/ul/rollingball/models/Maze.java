@@ -15,6 +15,7 @@ import fr.ul.rollingball.models.pastilles.TaillePastille;
 import fr.ul.rollingball.models.pastilles.TempsPastille;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -33,12 +34,13 @@ public class Maze
     private Pixmap decor;
     private Vector2 positionInitialeBille;
     private ArrayList<Body> bodiesMurs;
-    private FixtureDef physiqueDef; // Propriétés physiques d'un murs
-    private CircleShape circle;
+    private FixtureDef physiqueDef; // Propriétés physiques des murs
+    private CircleShape circle; // Utile pour créer la FixtureDef
 
     public Maze(GameWorld mondeJeu)
     {
         this.mondeJeu = mondeJeu;
+        numLabyrinthe = 0;
         bodiesMurs = new ArrayList<>();
         positionInitialeBille = new Vector2();
         
@@ -68,16 +70,15 @@ public class Maze
     public void loadLaby(ArrayList<Pastille> pastilles)
     {
         /* Destruction des murs précédents */
-        /*
-        Iterator<Body> it = pixelsMurs.iterator();
+        Iterator<Body> it = bodiesMurs.iterator();
         while(it.hasNext())
         {
             Body murs = it.next();
             mondeJeu.getMonde().destroyBody(murs);
-        }*/
+        }
 
         /* Choisit le masque correspondant au labyrinthe courant */
-        imgMasque = MaskFactories.getInstance().getMasqueLaby0();
+        imgMasque = MaskFactories.getInstance().getMasqueLaby(numLabyrinthe);
 
         /* Lecture du masque */
         readObjects(pastilles);
@@ -97,7 +98,7 @@ public class Maze
         /* Créer la pixmap du masque à partir de son image */
         masque = creerPixmap(imgMasque);
 
-        masque.setColor(Color.WHITE); // Met la couleur à blanc pour les prochaines opération de dessin
+        masque.setColor(Color.WHITE); // Met la couleur à blanc pour les prochaines opérations de dessin
 
         /* Parcours de la pixmap */
         for(int i = 0; i < masque.getWidth(); i++)
@@ -220,6 +221,7 @@ public class Maze
     private void buildTextureLaby()
     {
         int couleurPixel;
+        Color couleurPixelPiste;
 
         /* Créer les pixmap à partir des textures */
         murs = creerPixmap(imgLabyrinthe);
@@ -235,7 +237,14 @@ public class Maze
                 if(couleurPixel == 0) // C'est un mur
                     decor.drawPixel(x, y, murs.getPixel(x, y)); // Remplace la couleur du pixel du décor par la couleur du murs / 4 pour l'assombrir
                 else
-                    decor.drawPixel(x, y, decor.getPixel(x, y) / 4); // On assombrit la couleur des pixels qui forment le fond de la piste
+                {
+                    couleurPixelPiste = new Color(decor.getPixel(x, y));
+                    couleurPixelPiste.r *= 0.25;
+                    couleurPixelPiste.g *= 0.25;
+                    couleurPixelPiste.b *= 0.25;
+                    decor.setColor(couleurPixelPiste);
+                    decor.drawPixel(x, y); // On assombrit la couleur des pixels qui forment le fond de la piste
+                }
             }
         }
 
@@ -247,6 +256,13 @@ public class Maze
         decor.dispose();
     }
 
+    /**
+     * Met à jour le numéro du prochain labyrinthe
+     */
+    public void nextLaby()
+    {
+        numLabyrinthe++;
+    }
 
     /**
      * Ajoute dans la liste d'affichage les éléments du monde
@@ -254,10 +270,7 @@ public class Maze
      */
     public void draw(SpriteBatch affMonde)
     {
-        affMonde.draw(decorFinal, 0, 0, GameWorld.LARGEUR, GameWorld.HAUTEUR);
-
-        //affMonde.draw(new Texture(creerPixmap(imgLabyrinthe)), 0, 0, GameWorld.LARGEUR, GameWorld.HAUTEUR);
-        // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
+        affMonde.draw(decorFinal, 0, 0, GameWorld.LARGEUR, GameWorld.HAUTEUR); // Paramètres 0 et 0 définissent le point d'origine de l'image, en bas à gauche
     }
 
     /**
