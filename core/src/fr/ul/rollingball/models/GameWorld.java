@@ -46,13 +46,8 @@ public class GameWorld
         labyrinthe.loadLaby(pastilles);
 
         /* Création de la bille et position au milieu */
-        positionBille = labyrinthe.getPositionInitialeBille(); //new Vector2((float) LARGEUR/2, (float) HAUTEUR/2);
+        positionBille = labyrinthe.getPositionInitialeBille();
         bille = new Ball2D(monde, positionBille);
-
-        /*pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 3f, HAUTEUR / 3f)));
-        pastilles.add(new TempsPastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.5f)));
-        pastilles.add(new TaillePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 1.25f)));
-        pastilles.add(new ScorePastille(monde, new Vector2(LARGEUR / 1.5f, HAUTEUR / 2.5f)));*/
 
         /* Gestion des collisions */
         monde.setContactListener(new ContactListener()
@@ -154,8 +149,6 @@ public class GameWorld
         /* Nouvelle position de la bille */
         positionBille = labyrinthe.getPositionInitialeBille(); // Récupération de la nouvelle position
         bille.getBodyBall().setTransform(positionBille, 0);
-        //monde.destroyBody(bille.getBodyBall()); // On détruit le body de l'ancienne boule
-        //bille.creerBody(monde, positionBille); // On crée un nouveau body dans le monde avec la nouvelle position
 
         /* Vitesse à 0 */
         bille.applyGravite(new Vector2(0f, 0f));

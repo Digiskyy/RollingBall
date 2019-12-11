@@ -16,14 +16,14 @@ public class GameState
         EN_JEU, ARRETE, GAGNE, PERDU
     }
     Etat etat;
-    private int pastilleScoresRamassees;
+    private int pastillesScoresRamassees;
     private Timer.Task decompte;
 
     public GameState()
     {
         etat = Etat.ARRETE;
         score = 0;
-        pastilleScoresRamassees = 0;
+        pastillesScoresRamassees = 0;
         tempsRestant = TEMPS_DEPART;
 
         /* Création de la tâche pour le timer du temps de chargement de l'image d'intro */
@@ -59,9 +59,14 @@ public class GameState
         return etat == Etat.PERDU;
     }
 
-    public void setState(Etat nouvelEtat)
+    public void setEtat(Etat nouvelEtat)
     {
         etat = nouvelEtat;
+    }
+
+    public Etat getEtat()
+    {
+        return etat;
     }
 
     public int getTempsRestant()
@@ -69,14 +74,37 @@ public class GameState
         return tempsRestant;
     }
 
+    /**
+     * Ajoute un nombre de secondes au temps restant
+     * @param nbSecondes que l'on doit ajouter
+     */
+    public void ajouterSecondesTempsRestant(int nbSecondes)
+    {
+        tempsRestant += nbSecondes;
+    }
+
     public int getScore()
     {
         return score;
     }
 
-    public int getPastilleScoresRamassees()
+    /**
+     * Ajoute un nombre de secondes au temps restant
+     * @param points que l'on doit ajouter
+     */
+    public void ajouterPointsScores(int points)
     {
-        return pastilleScoresRamassees;
+        score += points;
+    }
+
+    public int getPastillesScoresRamassees()
+    {
+        return pastillesScoresRamassees;
+    }
+
+    public void incrementerScore()
+    {
+        pastillesScoresRamassees++;
     }
 
     public void countDown()

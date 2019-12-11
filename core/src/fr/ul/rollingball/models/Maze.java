@@ -113,17 +113,17 @@ public class Maze
 
                     case 128: // Pastille score
                         pastilles.add(new ScorePastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR)))); // Ajoute la pastille dans la liste des pastilles
-                        masque.fillCircle(i, j, 10); // Efface les autres pixels colorés qui forment cette pastille pour ne pas recréer d'autres pastilles à cet endroit en dessinant un cercle blanc
+                        masque.fillCircle(i+5, j+1, 5); // Efface les autres pixels colorés qui forment cette pastille pour ne pas recréer d'autres pastilles à cet endroit en dessinant un cercle blanc
                         break;
 
                     case 200: // Pastille taille
                         pastilles.add(new TaillePastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR),  convertitCoordonnees(j, GameWorld.HAUTEUR))));
-                        masque.fillCircle(i, j, 10);
+                        masque.fillCircle(i+5, j+1, 5); // Le centre de la pastille est à 1 pixel sur la gauche et 5 pixel vers le bas mais les repères sont inversés puisqu'il considère l'image comme affiché en portrait et pas en paysage
                         break;
 
                     case 225: // Pastille temps
                         pastilles.add(new TempsPastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR))));
-                        masque.fillCircle(i, j, 10);
+                        masque.fillCircle(i+5, j+1, 5);
                         break;
 
                     default: // Zone vide (couleurPixel = 255 = blanc)
