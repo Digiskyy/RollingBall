@@ -12,8 +12,11 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
+import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.models.GameState;
 import fr.ul.rollingball.models.GameWorld;
+
+import java.util.TimerTask;
 
 
 /**
@@ -41,7 +44,7 @@ public class GameScreen extends ScreenAdapter
     public GameScreen()
     {
         mondeJeu = new GameWorld(this);
-        //etatJeu = new GameState();
+        etatJeu = new GameState();
         dureeIteration = 1000; // durée d'une itération en ms
 
         /* Création d'une caméra pour le monde et d'une zone d'affichage */
@@ -66,20 +69,6 @@ public class GameScreen extends ScreenAdapter
         policeParam.borderWidth = 3f;
         police = policeTTF.generateFont(policeParam);
         policeTTF.dispose(); // On n'a plus besoin du générateur une fois que la police est généré
-
-        /* Création de la tâche pour le timer du temps de chargement de l'image d'intro */
-        tacheChgtLaby = new Timer.Task() {
-            @Override
-            public void run()
-            {
-                changeLaby();
-            }
-        };
-
-        /* Lancement du timer */
-        Timer.schedule(tacheChgtLaby, 1f, 1f); // 1f délai, 1f : 1s avant chaque tick
-        
-
     }
 
     /**
@@ -89,8 +78,17 @@ public class GameScreen extends ScreenAdapter
     @Override
     public void render(float delta)
     {
+        /* Si l'application est en état Arrêté, alors on quitte l'application */
+        if(etatJeu.isARRETE())
+        {
+            Gdx.app.exit();
+        }
+
         /* Gestion de la gravité */
         update();
+
+        /* Lancement du timer */
+        //Timer.schedule(tacheChgtLaby, 3f); // 1f délai, 1f : 1s avant chaque tick
 
         /* Mise à jour des caméras */
         camera.update();
@@ -104,13 +102,24 @@ public class GameScreen extends ScreenAdapter
         /* Affichage du monde et de ses composants */
         listeAffichageMonde.begin(); // Prépare la liste à être dessinée
         mondeJeu.draw(listeAffichageMonde); // Affiche
-        listeAffichageMonde.end(); // Finit l'affichage
-
-        /* Affichage de texte (temps et score) */
-        listeAffichageTexte.begin();
-        police.draw(listeAffichageTexte, "Score", Gdx.graphics.getWidth() / 3f, Gdx.graphics.getHeight() / 2f);
-        //police.draw(listeAffichageTexte, "Temps", 0, 0);
-        listeAffichageTexte.end();
+        listeAffichageMonde.end();
+        
+        if(etatJeu.isEN_JEU())
+        {
+            /* Affichage de texte (temps et score) */
+            listeAffichageTexte.begin();
+            police.draw(listeAffichageTexte, "Temps : " + etatJeu.getTempsRestant(), Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 2f);
+            police.draw(listeAffichageTexte, "Score : " + etatJeu.getScore(), 0, Gdx.graphics.getHeight() / 2f);
+            listeAffichageTexte.end();
+        }
+        else if(etatJeu.isGAGNE())
+        {
+            SoundFactory.getInstance().joueSonGagne();
+        }
+        else if(etatJeu.isPERDU())
+        {
+            SoundFactory.getInstance().joueSonPerdu();
+        }
 
         /* Mode debug qui affiche le rayon exact des bodies pour savoir s'ils correspondent aux images affichées */
         /*Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
@@ -145,6 +154,15 @@ public class GameScreen extends ScreenAdapter
      */
     public void update()
     {
+        /* Création de la tâche pour le timer du temps de chargement de l'image d'intro */
+        tacheChgtLaby = new Timer.Task() {
+            @Override
+            public void run()
+            {
+                changeLaby();
+            }
+        };
+
         float accelX = Gdx.input.getAccelerometerX() * 5f;
         float accelY = Gdx.input.getAccelerometerY() * 5f;
         Vector2 gravite = new Vector2(accelY, -accelX);
@@ -155,9 +173,14 @@ public class GameScreen extends ScreenAdapter
         /* Ramassage de toutes les pastilles */
         mondeJeu.ramassePastilles();
 
+        System.out.println("ECRAN JEU : " + mondeJeu.getEcranJeu());
+
         /* Changement du labyrinthe si manche gagnée */
         if(mondeJeu.isVictory())
-            mondeJeu.changeLaby();
+        {
+            etatJeu.setEtat(GameState.Etat.GAGNE);
+            Timer.schedule(tacheChgtLaby, 3f);
+        }
     }
 
     @Override
@@ -167,7 +190,7 @@ public class GameScreen extends ScreenAdapter
     public void show()
     {
         super.show();
-        //etatJeu.setEtat(GameState.Etat.EN_JEU);
+        etatJeu.setEtat(GameState.Etat.EN_JEU);
     }
 
     /**
@@ -175,7 +198,8 @@ public class GameScreen extends ScreenAdapter
      */
     public void changeLaby()
     {
-
+        mondeJeu.changeLaby();
+        etatJeu.setEtat(GameState.Etat.EN_JEU);
     }
 
     /**
@@ -207,6 +231,7 @@ public class GameScreen extends ScreenAdapter
 
     public void incrementerPastilleScore()
     {
+        System.out.println("++++++++++++++++++++++++++++++11111111111111111111111111111111111111");
         etatJeu.incrementerScore();
     }
 

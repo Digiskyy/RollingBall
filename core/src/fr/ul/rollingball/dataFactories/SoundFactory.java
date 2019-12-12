@@ -3,6 +3,7 @@ package fr.ul.rollingball.dataFactories;
 
 import com.badlogic.gdx.Audio;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 
 
@@ -13,9 +14,9 @@ public class SoundFactory
 {
     private static final SoundFactory INSTANCE = new SoundFactory();
     private Sound sonAlerte;
-    private Sound sonCollision;
-    private Sound sonPerdu;
-    private Sound sonGagne;
+    private Music sonCollision;
+    private Music sonPerdu;
+    private Music sonGagne;
     private Sound sonPastilleScore;
     private Sound sonPastilleTemps;
     private Sound sonPastilleTaille;
@@ -24,9 +25,9 @@ public class SoundFactory
     private SoundFactory()
     {
         sonAlerte = Gdx.audio.newSound(Gdx.files.internal("sounds/alerte.mp3")); // Crée un nouveau son (Sound est une interface)
-        sonCollision = Gdx.audio.newSound(Gdx.files.internal("sounds/collision.wav"));
-        sonGagne = Gdx.audio.newSound(Gdx.files.internal("sounds/victoire.mp3"));
-        sonPerdu = Gdx.audio.newSound(Gdx.files.internal("sounds/perte.mp3"));
+        sonCollision = Gdx.audio.newMusic(Gdx.files.internal("sounds/collision.wav"));
+        sonGagne = Gdx.audio.newMusic(Gdx.files.internal("sounds/victoire.mp3"));
+        sonPerdu = Gdx.audio.newMusic(Gdx.files.internal("sounds/perte.mp3"));
         sonPastilleScore = Gdx.audio.newSound(Gdx.files.internal("sounds/pastille.wav"));
         sonPastilleTemps = Gdx.audio.newSound(Gdx.files.internal("sounds/ptemps.wav"));
         sonPastilleTaille = Gdx.audio.newSound(Gdx.files.internal("sounds/ptaille.wav"));
@@ -42,19 +43,22 @@ public class SoundFactory
         return sonAlerte;
     }
 
-    public Sound getSonCollision()
+    public void joueSonCollision()
     {
-        return sonCollision;
+        if(!sonCollision.isPlaying())
+            sonCollision.play();
     }
 
-    public Sound getSonPerdu()
+    public void joueSonPerdu()
     {
-        return sonPerdu;
+        if(!sonPerdu.isPlaying())
+            sonPerdu.play();
     }
 
-    public Sound getSonGagne()
+    public void joueSonGagne()
     {
-        return sonGagne;
+        if(!sonGagne.isPlaying())
+            sonGagne.play();
     }
 
     public Sound getSonPastilleScore()

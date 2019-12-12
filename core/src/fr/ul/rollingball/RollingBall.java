@@ -44,8 +44,5 @@ public class RollingBall extends Game
 	{
 		ecranIntro.dispose();
 		setScreen(ecranJeu);
-
-		/* Arrêt du chrono Intro et des appels à la tâche */
-		Timer.instance().stop();
 	}
 }

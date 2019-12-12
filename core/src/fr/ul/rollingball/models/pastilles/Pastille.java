@@ -11,19 +11,21 @@ import fr.ul.rollingball.models.GameWorld;
  */
 public abstract class Pastille
 {
+    protected GameWorld mondeJeu;
     public static float RAYON = (float) GameWorld.LARGEUR / 150;
     protected Body bodyPastille;
     protected boolean isPicked; // Si la pastille est ramassée ou pas
 
-    public Pastille(World monde, Vector2 position)
+    public Pastille(GameWorld mondeJeu, Vector2 position)
     {
         isPicked = false;
+        this.mondeJeu = mondeJeu;
 
         /* Création du body */
         BodyDef bodyDefP = new BodyDef();
         bodyDefP.type = BodyDef.BodyType.StaticBody;
         bodyDefP.position.set(position.x, position.y);
-        bodyPastille = monde.createBody(bodyDefP); // On crée le body dans le monde
+        bodyPastille = mondeJeu.getMonde().createBody(bodyDefP); // On crée le body dans le monde
 
         /* Propriétés physiques */
         FixtureDef physiqueDef = new FixtureDef();

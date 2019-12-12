@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.models.pastilles.Pastille;
 import fr.ul.rollingball.views.GameScreen;
 
@@ -59,17 +60,14 @@ public class GameWorld
             public void beginContact(Contact contact)
             {
                 Body bodyAutre;
-                Body bodyBille;
 
                 /* Identifier la bille entre les deux objets en collisions */
                 if(contact.getFixtureA().getBody().getUserData().getClass().getSimpleName().equals(Ball2D.class.getSimpleName()))
                 {
-                    bodyBille = contact.getFixtureA().getBody();
                     bodyAutre = contact.getFixtureB().getBody();
                 }
                 else
                 {
-                    bodyBille = contact.getFixtureB().getBody();
                     bodyAutre = contact.getFixtureA().getBody();
                 }
 
@@ -77,6 +75,10 @@ public class GameWorld
                 if(bodyAutre.getUserData().getClass().getSuperclass().getSimpleName().equals(Pastille.class.getSimpleName()))
                 {
                     ((Pastille)bodyAutre.getUserData()).setPicked(true);
+                }
+                else // c'est un mur
+                {
+                    SoundFactory.getInstance().joueSonCollision();
                 }
             }
 
@@ -103,6 +105,11 @@ public class GameWorld
     public World getMonde()
     {
         return monde;
+    }
+
+    public GameScreen getEcranJeu()
+    {
+        return ecranJeu;
     }
 
     /**

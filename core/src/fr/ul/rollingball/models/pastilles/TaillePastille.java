@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.dataFactories.TextureFactory;
+import fr.ul.rollingball.models.GameWorld;
 
 /**
  * Pastille de type taille, qui augmente le taille de la bille quand elle est ramassée.
@@ -14,9 +15,9 @@ public class TaillePastille extends Pastille
 {
     private Texture imgPastilleTaille;
 
-    public TaillePastille(World monde, Vector2 position)
+    public TaillePastille(GameWorld mondeJeu, Vector2 position)
     {
-        super(monde, position);
+        super(mondeJeu, position);
         bodyPastille.setUserData(this);
         imgPastilleTaille = TextureFactory.getInstance().getImgPastilleTaille();
     }
@@ -39,5 +40,6 @@ public class TaillePastille extends Pastille
     public void effect()
     {
         SoundFactory.getInstance().getSonPastilleTaille().play(0.1f);
+
     }
 }

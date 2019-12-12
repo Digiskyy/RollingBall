@@ -8,7 +8,7 @@ import fr.ul.rollingball.dataFactories.SoundFactory;
  */
 public class GameState
 {
-    public static int TEMPS_DEPART;
+    public static int TEMPS_DEPART = 60;
     private int tempsRestant;
     private int score;
     public enum Etat
@@ -104,6 +104,7 @@ public class GameState
 
     public void incrementerScore()
     {
+        score++;
         pastillesScoresRamassees++;
     }
 

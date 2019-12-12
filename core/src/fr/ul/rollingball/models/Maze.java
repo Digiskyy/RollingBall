@@ -52,8 +52,8 @@ public class Maze
         circle = new CircleShape();
         circle.setRadius(0.1f); // Pourquoi, je ne sais pas
         physiqueDef.shape = circle;
-        physiqueDef.density = 1;
-        physiqueDef.restitution = (float) 0.25; // Elasticité de l'objet
+        physiqueDef.density = 5;
+        physiqueDef.restitution = 0.5f; // Elasticité de l'objet
         physiqueDef.friction = 0;
         //circle.dispose(); // On n'a plus besoin de la forme, on la détruit
     }
@@ -112,17 +112,17 @@ public class Maze
                         break;
 
                     case 128: // Pastille score
-                        pastilles.add(new ScorePastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR)))); // Ajoute la pastille dans la liste des pastilles
+                        pastilles.add(new ScorePastille(mondeJeu, new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR)))); // Ajoute la pastille dans la liste des pastilles
                         masque.fillCircle(i+5, j+1, 5); // Efface les autres pixels colorés qui forment cette pastille pour ne pas recréer d'autres pastilles à cet endroit en dessinant un cercle blanc
                         break;
 
                     case 200: // Pastille taille
-                        pastilles.add(new TaillePastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR),  convertitCoordonnees(j, GameWorld.HAUTEUR))));
+                        pastilles.add(new TaillePastille(mondeJeu, new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR),  convertitCoordonnees(j, GameWorld.HAUTEUR))));
                         masque.fillCircle(i+5, j+1, 5); // Le centre de la pastille est à 1 pixel sur la gauche et 5 pixel vers le bas mais les repères sont inversés puisqu'il considère l'image comme affiché en portrait et pas en paysage
                         break;
 
                     case 225: // Pastille temps
-                        pastilles.add(new TempsPastille(mondeJeu.getMonde(), new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR))));
+                        pastilles.add(new TempsPastille(mondeJeu, new Vector2(convertitCoordonnees(i, GameWorld.LARGEUR), convertitCoordonnees(j, GameWorld.HAUTEUR))));
                         masque.fillCircle(i+5, j+1, 5);
                         break;
 
