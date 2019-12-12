@@ -68,8 +68,8 @@ public abstract class Ball
      */
     public void applyGravite(Vector2 gravite)
     {
-        //bodyBall.applyForceToCenter(gravite, true); // Applique la gravité à la boule - On peut "endormir" l'objet pour ne pas faire les calculs dessus pour améliorer les performances si l'objet n'est pas mobile (forces stables)
-        bodyBall.setLinearVelocity(gravite); // Fonctionne mieux
+        bodyBall.applyForceToCenter(gravite, true); // Applique la gravité à la boule - On peut "endormir" l'objet pour ne pas faire les calculs dessus pour améliorer les performances si l'objet n'est pas mobile (forces stables)
+        //bodyBall.setLinearVelocity(gravite); // Fonctionne mieux
     }
 
     /**

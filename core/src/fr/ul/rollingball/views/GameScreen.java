@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
 import fr.ul.rollingball.dataFactories.SoundFactory;
+import fr.ul.rollingball.dataFactories.TextureFactory;
 import fr.ul.rollingball.models.GameState;
 import fr.ul.rollingball.models.GameWorld;
 
@@ -102,10 +103,11 @@ public class GameScreen extends ScreenAdapter
         /* Affichage du monde et de ses composants */
         listeAffichageMonde.begin(); // Prépare la liste à être dessinée
         mondeJeu.draw(listeAffichageMonde); // Affiche
-        listeAffichageMonde.end();
         
         if(etatJeu.isEN_JEU())
         {
+            listeAffichageMonde.end();
+
             /* Affichage de texte (temps et score) */
             listeAffichageTexte.begin();
             police.draw(listeAffichageTexte, "Temps : " + etatJeu.getTempsRestant(), Gdx.graphics.getWidth() / 4f, Gdx.graphics.getHeight() / 2f);
@@ -114,12 +116,18 @@ public class GameScreen extends ScreenAdapter
         }
         else if(etatJeu.isGAGNE())
         {
+            listeAffichageMonde.draw(TextureFactory.getInstance().getImgGagne(), GameWorld.LARGEUR / 4f, GameWorld.HAUTEUR / 4f, GameWorld.LARGEUR / 2f, GameWorld.HAUTEUR / 2f);
+            listeAffichageMonde.end();
+
             SoundFactory.getInstance().joueSonGagne();
         }
         else if(etatJeu.isPERDU())
         {
             SoundFactory.getInstance().joueSonPerdu();
+            listeAffichageMonde.end();
         }
+
+
 
         /* Mode debug qui affiche le rayon exact des bodies pour savoir s'ils correspondent aux images affichées */
         /*Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
@@ -157,14 +165,13 @@ public class GameScreen extends ScreenAdapter
         /* Création de la tâche pour le timer du temps de chargement de l'image d'intro */
         tacheChgtLaby = new Timer.Task() {
             @Override
-            public void run()
-            {
+            public void run() {
                 changeLaby();
             }
         };
 
-        float accelX = Gdx.input.getAccelerometerX() * 5f;
-        float accelY = Gdx.input.getAccelerometerY() * 5f;
+        float accelX = Gdx.input.getAccelerometerX() * 100f;
+        float accelY = Gdx.input.getAccelerometerY() * 100f;
         Vector2 gravite = new Vector2(accelY, -accelX);
 
         mondeJeu.getBille().applyGravite(gravite);
@@ -172,8 +179,6 @@ public class GameScreen extends ScreenAdapter
 
         /* Ramassage de toutes les pastilles */
         mondeJeu.ramassePastilles();
-
-        System.out.println("ECRAN JEU : " + mondeJeu.getEcranJeu());
 
         /* Changement du labyrinthe si manche gagnée */
         if(mondeJeu.isVictory())
@@ -231,7 +236,6 @@ public class GameScreen extends ScreenAdapter
 
     public void incrementerPastilleScore()
     {
-        System.out.println("++++++++++++++++++++++++++++++11111111111111111111111111111111111111");
         etatJeu.incrementerScore();
     }
 
