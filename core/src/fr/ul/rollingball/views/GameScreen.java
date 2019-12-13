@@ -10,14 +10,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.Timer;
 import fr.ul.rollingball.dataFactories.SoundFactory;
 import fr.ul.rollingball.dataFactories.TextureFactory;
 import fr.ul.rollingball.models.GameState;
 import fr.ul.rollingball.models.GameWorld;
-
-import java.util.TimerTask;
 
 
 /**
@@ -41,12 +38,14 @@ public class GameScreen extends ScreenAdapter
     private static int dureeIteration;
     private GameState etatJeu;
     private Timer.Task tacheChgtLaby;
+    private boolean timerLance;
 
     public GameScreen()
     {
         mondeJeu = new GameWorld(this);
         etatJeu = new GameState();
         dureeIteration = 1000; // durée d'une itération en ms
+        timerLance = false;
 
         /* Création d'une caméra pour le monde et d'une zone d'affichage */
         camera = new OrthographicCamera(GameWorld.LARGEUR, GameWorld.HAUTEUR);
@@ -128,7 +127,6 @@ public class GameScreen extends ScreenAdapter
         }
 
 
-
         /* Mode debug qui affiche le rayon exact des bodies pour savoir s'ils correspondent aux images affichées */
         /*Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
         box2DDebugRenderer.render(mondeJeu.getMonde(), camera.combined);*/
@@ -170,6 +168,18 @@ public class GameScreen extends ScreenAdapter
             }
         };
 
+        /* Changement du labyrinthe si manche gagnée */
+        if(mondeJeu.isVictory())
+        {
+            etatJeu.setEtat(GameState.Etat.GAGNE);
+
+            if(!timerLance)
+            {
+                timerLance = true;
+                Timer.schedule(tacheChgtLaby, 3f);
+            }
+        }
+
         float accelX = Gdx.input.getAccelerometerX() * 100f;
         float accelY = Gdx.input.getAccelerometerY() * 100f;
         Vector2 gravite = new Vector2(accelY, -accelX);
@@ -179,13 +189,6 @@ public class GameScreen extends ScreenAdapter
 
         /* Ramassage de toutes les pastilles */
         mondeJeu.ramassePastilles();
-
-        /* Changement du labyrinthe si manche gagnée */
-        if(mondeJeu.isVictory())
-        {
-            etatJeu.setEtat(GameState.Etat.GAGNE);
-            Timer.schedule(tacheChgtLaby, 3f);
-        }
     }
 
     @Override
@@ -205,6 +208,7 @@ public class GameScreen extends ScreenAdapter
     {
         mondeJeu.changeLaby();
         etatJeu.setEtat(GameState.Etat.EN_JEU);
+        timerLance = false;
     }
 
     /**
